@@ -295,7 +295,11 @@ class ResponseWrapper {
   }
 
   // needed by vary: https://github.com/jshttp/vary/blob/5d725d059b3871025cf753e9dfa08924d0bcfa8f/index.js#L134
-  public getHeader() {}
+  public getHeader(key: string) {
+  if (this.isAborted) return undefined;
+  const header = this.headers.find(([headerKey]) => headerKey.toLowerCase() === key.toLowerCase());
+  return header ? header[1] : undefined;
+}
 
   public writeStatus(status: string) {
     if (this.isAborted) return;
